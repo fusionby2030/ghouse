@@ -1,3 +1,4 @@
+#!/usr/bin/python
 import os
 import glob
 from datetime import datetime
@@ -5,11 +6,11 @@ import time
 
 writeorder = ['a', 'b', 'c', 'd', 'e', "f"]
 w1devicespath = "/sys/bus/w1/devices/"
-writepath = "./tempdata.csv"
+writepath = "/home/pi/dev/ghouse/datacollection/tempdata.csv"
 
 def read_sensor_names():
     global sensconf_names 
-    sensconf_path = "./sensor_names"
+    sensconf_path = "/home/pi/dev/ghouse/datacollection/sensor_names"
     sensconf_names = {    }
     with open(sensconf_path, 'r') as file:
         for line in file:
@@ -71,6 +72,6 @@ if __name__ == "__main__":
     # print(collected_data)
     # write_data(collected_data, collect_time)
 
-    while True:
-        run_collect()
-        time.sleep(60)
+    # while True:
+    run_collect()
+    # time.sleep(60)

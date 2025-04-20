@@ -1,117 +1,100 @@
-#define _XOPEN_SOURCE 700
+#define _XOPEN_SOURCE 700  // for strptime()
+#include "readtempdata.h"
 #include <stdio.h>
-#include <string.h>
 #include <stdlib.h>
+#include <string.h>
 #include <time.h>
 
-#define MAX_LINE_LEN 256
-#define N_TEMPS      6
+#define N_TEMPS 6
 
-typedef struct {
-    // store the epoch second
-    time_t timestamp;
-    // if you need sub‐second precision:
-    double fractional;
-    // raw string for labeling axes, etc.
-    char timestr[32];    
+// typedef struct {
+//     time_t    tsec;              // seconds since epoch
+//     double    tfraction;         // fractional seconds
+//     double    temp[N_TEMPS];     // temperature readings
+//     char      timestr[32];       // original timestamp string
+// } GHOUSE_STATE;
 
-    float temperatures[N_TEMPS];
-} GHOUSE_STATE;
-
-int main(void) {
-    FILE *fp = fopen("/home/akadam/dev/ghouse/datacollection/tempdata.csv", "r"); 
-//     FILE *fp = fopen("/home/pi/dev/ghouse/datacollection/tempdata.csv", "r");
+/**
+ * readtemps: read CSV file and return an array of GHOUSE_STATE
+ * @filename: path to CSV file (first line is header)
+ * @out_count: pointer to size_t to receive number of records read
+ * Returns: pointer to malloc'd GHOUSE_STATE[], or NULL on error
+ * Caller must free() the returned pointer.
+ */
+GHOUSE_STATE* readtemps(const char *filename, size_t *out_count) {
+    FILE *fp = fopen(filename, "r");
     if (!fp) {
         perror("fopen");
-        return 1;
+        return NULL;
     }
-
-    // First line is a header
-    char line[MAX_LINE_LEN];
+    char line[256];
+    // skip header line
     if (!fgets(line, sizeof(line), fp)) {
-        fprintf(stderr, "empty file?\n");
+        fprintf(stderr, "Empty file: %s\n", filename);
         fclose(fp);
-        return 1;
+        return NULL;
     }
 
-    // allocate an initial batch of states; we'll realloc if needed
-    size_t capacity = 128;
-    size_t count    = 0;
-    GHOUSE_STATE *states = malloc(capacity * sizeof *states);
+    size_t cap = 128, n = 0;
+    GHOUSE_STATE *states = malloc(cap * sizeof *states);
+    if (!states) {
+        perror("malloc");
+        fclose(fp);
+        return NULL;
+    }
 
     while (fgets(line, sizeof(line), fp)) {
         // strip newline
         line[strcspn(line, "\r\n")] = '\0';
 
-        // 1) pull timestamp token
+        // tokenize timestamp
         char *tok = strtok(line, ",");
         if (!tok) continue;
+        // copy raw timestamp
+        strncpy(states[n].timestr, tok, sizeof(states[n].timestr)-1);
+        states[n].timestr[sizeof(states[n].timestr)-1] = '\0';
 
-        // copy the raw string for later (e.g. axis labels)
-        strncpy(states[count].timestr, tok, sizeof(states[count].timestr)-1);
-        states[count].timestr[sizeof(states[count].timestr)-1] = '\0';
-
-        // 2) parse out sub‐seconds if present
+        // split off fractional seconds
         char buf[32];
         double frac = 0.0;
         strncpy(buf, tok, sizeof(buf)-1);
         buf[sizeof(buf)-1] = '\0';
         char *dot = strchr(buf, '.');
         if (dot) {
-            // move off the dot, parse microseconds
             frac = atof(dot+1) / 1e6;
-            *dot = '\0';  // truncate to just "YYYY‑MM‑DD HH:MM:SS"
+            *dot = '\0';
         }
-        states[count].fractional = frac;
+        states[n].tfraction = frac;
 
-        // 3) parse the main timestamp
+        // parse main timestamp
         struct tm tm0 = {0};
         if (!strptime(buf, "%Y-%m-%d %H:%M:%S", &tm0)) {
-            fprintf(stderr, "bad timestamp: %s\n", buf);
+            fprintf(stderr, "Bad timestamp: %s\n", buf);
             continue;
         }
-        tm0.tm_isdst = -1;   // let mktime figure out DST
-        states[count].timestamp = mktime(&tm0);
+        tm0.tm_isdst = -1;  // let mktime determine DST
+        states[n].tsec = mktime(&tm0);
 
-        // 4) grab each of the N_TEMPS float fields
+        // read N_TEMPS temperature fields
         for (int i = 0; i < N_TEMPS; i++) {
             tok = strtok(NULL, ",");
-            if (!tok) {
-                fprintf(stderr, "missing field %d on line %zu\n", i+1, count+2);
-                states[count].temperatures[i] = 0;
-            } else {
-                states[count].temperatures[i] = atof(tok);
-            }
+            states[n].temp[i] = tok ? atof(tok) : 0.0;
         }
 
-        count++;
-        if (count >= capacity) {
-            capacity *= 2;
-            states = realloc(states, capacity * sizeof *states);
-            if (!states) {
+        // grow array if needed
+        if (++n >= cap) {
+            cap *= 2;
+            GHOUSE_STATE *tmp = realloc(states, cap * sizeof *states);
+            if (!tmp) {
                 perror("realloc");
                 break;
             }
+            states = tmp;
         }
     }
 
     fclose(fp);
-
-    printf("Read %zu records.\n", count);
-    // Example: print first few:
-    for (size_t i = 0; i < count && i < 5; i++) {
-        struct tm *lt = localtime(&states[i].timestamp);
-        char timestr[64];
-        strftime(timestr, sizeof(timestr), "%Y-%m-%d %H:%M:%S", lt);
-        printf("%s.%06.0f →", timestr, states[i].fractional * 1e6);
-        for (int j = 0; j < N_TEMPS; j++)
-            printf(" %5.2f", states[i].temperatures[j]);
-        putchar('\n');
-    }
-
-    // …now hand `states` & `count` off to your plotting/GUI routine…
-
-    free(states);
-    return 0;
+    *out_count = n;
+    return states;
 }
 

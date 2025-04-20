@@ -5,6 +5,8 @@ import matplotlib.pyplot as plt
 import scienceplots 
 plt.style.use(['science', 'no-latex'])
 import datetime 
+import matplotlib.dates as mdates
+
 
 # TODO: argument to file? 
 FNAME = "/home/pi/dev/ghouse/datacollection/tempdata.csv"
@@ -29,7 +31,6 @@ df["Time"] = pd.to_datetime(df["Time"], format="%Y-%m-%d %H:%M:%S.%f")
 
 
 """ Plotting """
-import matplotlib.dates as mdates
 
 sensor_plot_order = ['a', 'b', 'c', 'd', 'e', "f"]
 fig, axs = plt.subplots(1, 1, figsize=(4, 3), dpi=300)
@@ -40,6 +41,7 @@ axs[0].set_xlabel("Time")
 axs[0].set_ylabel("Temperature (°C)")
 axs[0].set_ylim(-15, 30)
 # TODO: filter for time range to plot 
+# set x lim (0) to be 1 day before and 1 day after 
 
 # Plot each sensor
 for i, sensor_name in enumerate(sensor_plot_order):

@@ -1,0 +1,11 @@
+[project]
+name = "ghouse"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "matplotlib>=3.10.1",
+    "pandas>=2.2.3",
+    "scienceplots>=2.1.1",
+]

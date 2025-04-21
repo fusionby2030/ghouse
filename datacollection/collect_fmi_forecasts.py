@@ -1,3 +1,4 @@
+#!/home/pi/dev/ghouse/.venv/bin/python3
 import datetime as dt
 import pandas as pd 
 import fmi_weather_client as fmi
@@ -76,6 +77,6 @@ df = pd.DataFrame.from_dict(collected_data, orient='index')
 print(df.head())
 print(df.tail())
 
-FNAME = f"/home/pi/dev/ghouse/data/external/{NOW.strftime('%Y-%m-%d')}-{UNTIL.strftime('%Y-%m-%d')}_fmi_kumpula_forecast.csv"
+FNAME = f"/home/pi/dev/ghouse/data/external/24hr_forecast_fmi_kumpula.csv"
 df.to_csv(FNAME, sep=",", index=False)
-print(f"Forecast saved to {FNAME}")
+print(f"{NOW} 24hr Forecast saved to {FNAME}")

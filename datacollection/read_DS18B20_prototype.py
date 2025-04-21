@@ -31,7 +31,8 @@ def read_sensor_offsets():
             devid = devid.strip()
             offset  = offset.strip()
             sensor_offsets[devid] = float(offset)
-    
+    return sensor_offsets
+
 def read_all_devices():
     avail_devices = glob.glob(w1devicespath + '*')
     collected_data = {key: None for key in sensconf_names.keys()}
@@ -51,6 +52,17 @@ def read_all_devices():
         collected_data[_devid] = temp
     return collected_data
 
+def offset_collected_data(collected_data):
+    # offset the collected data
+    print("offsetting data from \'sensor_offsets\'")
+    for devid in collected_data.keys(): 
+        # print("Before offsetting: ", devid, collected_data[devid])
+        offset = sensor_offsets[devid]
+        collected_data[devid] += offset
+        # print("After offsetting: ", devid, collected_data[devid])
+    return collected_data 
+
+
 def write_data(collected_data, timestamp):
     # build the write string
     
@@ -69,22 +81,12 @@ def write_data(collected_data, timestamp):
         
         file.write(newline)
 
-def offset_collected_data(collected_data):
-    # offset the collected data
-    print("offsetting data from \'sensor_offsets\'")
-    for devid in collected_data.keys(): 
-        offset = sensor_offsets[devid]
-        collected_data[devid] += offset
-    return collected_data 
-
 def run_collect():
     collect_time = datetime.now()
     collected_data = read_all_devices()
     collected_data = offset_collected_data(collected_data)
-    write_data(collected_data, collect_time)
-
+    # write_data(collected_data, collect_time)
     print(f"{collect_time} saved to {writepath}")
-
 if __name__ == "__main__":
     read_sensor_names()
     read_sensor_offsets()

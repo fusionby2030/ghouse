@@ -6,8 +6,7 @@ git add data/
 git add datavisualisation/figures
 git add datacollection/
 
-TODAY=$(date +%Y-%m-%d)
-
+TODAY=$(date +%Y-%m-%d_%H:%M)
 git status
 echo pushing data to $TODAY
 git commit -m "updaing data $TODAY"

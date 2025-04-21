@@ -7,12 +7,12 @@ Today's date: 2025-04-22
 4  2025-04-22 00:40:00  ...                        NaN
 
 [5 rows x 8 columns]
-                  Time  ...  Precipitation amount (mm)
-2  2025-04-22 00:20:00  ...                        NaN
-3  2025-04-22 00:30:00  ...                        NaN
-4  2025-04-22 00:40:00  ...                        NaN
-5  2025-04-22 00:50:00  ...                        NaN
-6  2025-04-22 01:00:00  ...                        0.0
+                   Time  ...  Precipitation amount (mm)
+8   2025-04-22 01:20:00  ...                        NaN
+9   2025-04-22 01:30:00  ...                        NaN
+10  2025-04-22 01:40:00  ...                        NaN
+11  2025-04-22 01:50:00  ...                        NaN
+12  2025-04-22 02:00:00  ...                        0.0
 
 [5 rows x 8 columns]
                   Time  ...  Ultraviolet irradiance (index)
@@ -23,12 +23,12 @@ Today's date: 2025-04-22
 4  2025-04-22 00:04:00  ...                             0.0
 
 [5 rows x 10 columns]
-                   Time  ...  Ultraviolet irradiance (index)
-53  2025-04-22 00:53:00  ...                             0.0
-54  2025-04-22 00:54:00  ...                             0.0
-55  2025-04-22 00:55:00  ...                             0.0
-56  2025-04-22 00:56:00  ...                             0.0
-57  2025-04-22 00:57:00  ...                             0.0
+                    Time  ...  Ultraviolet irradiance (index)
+113  2025-04-22 01:53:00  ...                             0.0
+114  2025-04-22 01:54:00  ...                             0.1
+115  2025-04-22 01:55:00  ...                             0.0
+116  2025-04-22 01:56:00  ...                             0.0
+117  2025-04-22 01:57:00  ...                             0.0
 
 [5 rows x 10 columns]
 Data saved to: /home/pi/dev/ghouse/data/external/2025-04-22_fmi_kumpula_temperature.csv

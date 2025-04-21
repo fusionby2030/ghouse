@@ -1,4 +1,5 @@
 #!/home/pi/dev/ghouse/.venv/bin/python3
+# https://en.ilmatieteenlaitos.fi/guidance-to-observations
 import datetime as dt 
 from fmiopendata.wfs import download_stored_query 
 import pandas as pd 

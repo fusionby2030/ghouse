@@ -19,5 +19,5 @@ Found  28-004c0a000096 a
 Found  28-01208e0000af c
 Found  28-00dc0a0000af b
 offsetting data from 'sensor_offsets'
-2025-04-21 13:55:01.900183,21.137,21.462,21.187,21.067, 21.25,  21.5,
-2025-04-21 13:55:01.900183 saved to /home/pi/dev/ghouse/data/internal/tempdata.csv
+2025-04-21 13:59:01.675526,21.137,  21.4,21.062,21.005,21.187,21.437,
+2025-04-21 13:59:01.675526 saved to /home/pi/dev/ghouse/data/internal/tempdata.csv

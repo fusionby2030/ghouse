@@ -58,11 +58,25 @@ def write_data(collected_data, timestamp):
     for name in writeorder:
         written = False
         for devid, _name in sensconf_names.items():
+            # if name == _name:
+            #     if collected_data[devid] is None:
+            #         newline += ','  
+            #     else:
+            #         newline += f'{collected_data[devid]:6},'
+            #         written = True
             if name == _name:
-                newline += f'{collected_data[devid]:6},'
-                written = True
-        if not written:
-            newline += "None, "
+                break
+        # now _name and devid is set
+        valtowrite = collected_data[devid]
+        print(name, _name, devid, valtowrite)
+        if valtowrite is None:
+            newline += ','
+        else:
+            newline += f'{collected_data[devid]:6},'
+        # if not written:
+        #     newline += ","
+        print(newline)
+    newline = newline[:-1] # remove trailing comma
     print(newline)
     newline += "\n"
     with open(writepath, 'a') as file:
@@ -72,7 +86,9 @@ def write_data(collected_data, timestamp):
 def offset_collected_data(collected_data):
     # offset the collected data
     print("offsetting data from \'sensor_offsets\'")
-    for devid in collected_data.keys(): 
+    for devid in collected_data.keys():
+        if collected_data[devid] is None:
+            continue  
         offset = sensor_offsets[devid]
         collected_data[devid] += offset
     return collected_data 

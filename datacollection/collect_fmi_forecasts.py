@@ -4,7 +4,7 @@ import pandas as pd
 import fmi_weather_client as fmi
 from fmi_weather_client.errors import ClientError, ServerError
 
-NOW = dt.datetime.now()
+NOW = dt.datetime.now() 
 FINLAND_OFFSET = 3 * 3600  # 3 hours for SUMMER time, 2 hours for WINTER time
 
 NUMHOURS = 24

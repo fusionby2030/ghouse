@@ -1,1 +1,35 @@
 Today's date: 2025-04-30
+                  Time  ...  Precipitation amount (mm)
+0  2025-04-30 00:00:00  ...                        0.0
+1  2025-04-30 00:10:00  ...                        NaN
+2  2025-04-30 00:20:00  ...                        NaN
+3  2025-04-30 00:30:00  ...                        NaN
+4  2025-04-30 00:40:00  ...                        NaN
+
+[5 rows x 8 columns]
+                   Time  ...  Precipitation amount (mm)
+50  2025-04-30 08:20:00  ...                        NaN
+51  2025-04-30 08:30:00  ...                        NaN
+52  2025-04-30 08:40:00  ...                        NaN
+53  2025-04-30 08:50:00  ...                        NaN
+54  2025-04-30 09:00:00  ...                        0.0
+
+[5 rows x 8 columns]
+                  Time  ...  Ultraviolet irradiance (index)
+0  2025-04-30 00:00:00  ...                             0.0
+1  2025-04-30 00:01:00  ...                             0.0
+2  2025-04-30 00:02:00  ...                             0.0
+3  2025-04-30 00:03:00  ...                             0.1
+4  2025-04-30 00:04:00  ...                             0.0
+
+[5 rows x 10 columns]
+                    Time  ...  Ultraviolet irradiance (index)
+534  2025-04-30 08:54:00  ...                             0.3
+535  2025-04-30 08:55:00  ...                             0.3
+536  2025-04-30 08:56:00  ...                             0.3
+537  2025-04-30 08:57:00  ...                             0.3
+538  2025-04-30 08:58:00  ...                             0.3
+
+[5 rows x 10 columns]
+Data saved to: /home/pi/dev/ghouse/data/external/2025-04-30_fmi_kumpula_temperature.csv
+Data saved to: /home/pi/dev/ghouse/data/external/2025-04-30_fmi_kumpula_radiation.csv

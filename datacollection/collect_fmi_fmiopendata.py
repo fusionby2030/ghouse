@@ -64,7 +64,7 @@ def get_kumpula_radiation_data_for_times(start_time, end_time):
     return temp_df_rad
 
 if __name__ == "__main__": 
-    today = dt.datetime.now() #-  dt.timedelta(days=1)
+        today = dt.datetime.now() # -  dt.timedelta(days=1)
     today_str = today.strftime('%Y-%m-%d')
 
     DAYSTART = dt.datetime(today.year, today.month, today.day, 0, 0, 0)

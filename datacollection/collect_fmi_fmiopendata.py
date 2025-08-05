@@ -63,8 +63,17 @@ def get_kumpula_radiation_data_for_times(start_time, end_time):
     temp_df_rad = pd.DataFrame.from_dict(collected_data, orient='index')
     return temp_df_rad
 
-if __name__ == "__main__": 
-    today = dt.datetime.now()  -  dt.timedelta(days=1)
+import argparse 
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-y', action='store_true')
+    args = parser.parse_args()
+
+    
+    today = dt.datetime.now()  # -  dt.timedelta(days=1)
+    if args.y:
+        today -= dt.timedelta(days=1)
+        
     today_str = today.strftime('%Y-%m-%d')
 
     DAYSTART = dt.datetime(today.year, today.month, today.day, 0, 0, 0)

@@ -1,1 +1,35 @@
 Today's date: 2025-09-10
+                  Time  ...  Precipitation amount (mm)
+0  2025-09-10 00:00:00  ...                        0.0
+1  2025-09-10 00:10:00  ...                        NaN
+2  2025-09-10 00:20:00  ...                        NaN
+3  2025-09-10 00:30:00  ...                        NaN
+4  2025-09-10 00:40:00  ...                        NaN
+
+[5 rows x 8 columns]
+                   Time  ...  Precipitation amount (mm)
+56  2025-09-10 09:20:00  ...                        NaN
+57  2025-09-10 09:30:00  ...                        NaN
+58  2025-09-10 09:40:00  ...                        NaN
+59  2025-09-10 09:50:00  ...                        NaN
+60  2025-09-10 10:00:00  ...                        0.0
+
+[5 rows x 8 columns]
+                  Time  ...  Ultraviolet irradiance (index)
+0  2025-09-10 00:00:00  ...                             0.0
+1  2025-09-10 00:01:00  ...                             0.0
+2  2025-09-10 00:02:00  ...                             0.0
+3  2025-09-10 00:03:00  ...                             0.0
+4  2025-09-10 00:04:00  ...                             0.0
+
+[5 rows x 10 columns]
+                    Time  ...  Ultraviolet irradiance (index)
+593  2025-09-10 09:53:00  ...                             0.9
+594  2025-09-10 09:54:00  ...                             0.9
+595  2025-09-10 09:55:00  ...                             0.9
+596  2025-09-10 09:56:00  ...                             0.9
+597  2025-09-10 09:57:00  ...                             0.9
+
+[5 rows x 10 columns]
+Data saved to: /home/pi/dev/ghouse/data/external/2025-09-10_fmi_kumpula_temperature.csv
+Data saved to: /home/pi/dev/ghouse/data/external/2025-09-10_fmi_kumpula_radiation.csv

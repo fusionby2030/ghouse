@@ -73,9 +73,13 @@ import argparse
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('-y', action='store_true')
+    parser.add_argument('-date', type=str, help="Date in format YYYY-MM-DD", default=None)
     args = parser.parse_args()
     
-    today = dt.datetime.now()  # -  dt.timedelta(days=1)
+    if args.date is None:
+        today = dt.datetime.now()  # -  dt.timedelta(days=1)
+    else:
+        today = dt.datetime.strptime(args.date, '%Y-%m-%d')
     if args.y:
         today -= dt.timedelta(days=1)
 
@@ -96,7 +100,7 @@ if __name__ == "__main__":
 
     print(temp_df.head())
     print(temp_df.tail())
-    
+
     print(temp_df_rad.head())
     print(temp_df_rad.tail())
 

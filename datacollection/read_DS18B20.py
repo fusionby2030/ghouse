@@ -3,15 +3,18 @@ import os
 import glob
 from datetime import datetime
 import time
+import os 
+DATAPATH = os.getenv('DATAPATH', '/home/pi/dev/ghouse/data')
 
 writeorder = ['a', 'b', 'c', 'd', 'e', "f"]
 w1devicespath = "/sys/bus/w1/devices/"
-writepath = "/home/pi/dev/ghouse/datacollection/tempdata.csv"
-writepath = "/home/pi/dev/ghouse/data/internal/tempdata.csv"
+writepath = f"{DATAPATH}/internal/tempdata.csv"
+SENSORNAMEPATH = os.getenv('SENSORNAMEPATH', '/home/pi/dev/ghouse/datacollection/sensor_names')
+SENSOROFFSETPATH = os.getenv('SENSOROFFSETPATH', '/home/pi/dev/ghouse/datacollection/sensor_offsets')
 
 def read_sensor_names():
     global sensconf_names 
-    sensconf_path = "/home/pi/dev/ghouse/datacollection/sensor_names"
+    sensconf_path = SENSORNAMEPATH
     sensconf_names = {    }
     with open(sensconf_path, 'r') as file:
         for line in file:
@@ -23,7 +26,7 @@ def read_sensor_names():
 
 def read_sensor_offsets():
     global sensor_offsets 
-    sensoffset_path = "/home/pi/dev/ghouse/datacollection/sensor_offsets"
+    sensoffset_path = SENSOROFFSETPATH
     sensor_offsets = {    }
     with open(sensoffset_path, 'r') as file:
         for line in file:

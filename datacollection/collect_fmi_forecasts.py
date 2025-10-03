@@ -3,6 +3,9 @@ import datetime as dt
 import pandas as pd 
 import fmi_weather_client as fmi
 from fmi_weather_client.errors import ClientError, ServerError
+import os
+
+DATAPATH = os.getenv('DATAPATH', '/home/pi/dev/ghouse/data')
 
 NOW = dt.datetime.now()
 FINLAND_OFFSET = 3 * 3600  # 3 hours for SUMMER time, 2 hours for WINTER time
@@ -69,14 +72,13 @@ for num, weather_data in enumerate(forecast.forecasts):
         keyname = f"{key} ({keyunit})"
         collected_data[num][keyname] = keyval
     savetime = weather_data.time + dt.timedelta(seconds=FINLAND_OFFSET)
-
     collected_data[num]['Time'] =savetime.strftime("%Y-%m-%d %H:%M:%S")
 
 
 df = pd.DataFrame.from_dict(collected_data, orient='index')
 print(df.head())
 print(df.tail())
-
-FNAME = f"/home/pi/dev/ghouse/data/external/24hr_forecast_fmi_kumpula.csv"
+FNAME = f"{DATAPATH}/external/24hr_forecast_fmi_kumpula.csv"
+#FNAME = f"/home/pi/dev/ghouse/data/external/24hr_forecast_fmi_kumpula.csv"
 df.to_csv(FNAME, sep=",", index=False)
 print(f"{NOW} 24hr Forecast saved to {FNAME}")

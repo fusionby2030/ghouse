@@ -3,6 +3,9 @@
 import datetime as dt 
 from fmiopendata.wfs import download_stored_query 
 import pandas as pd 
+import os
+
+DATAPATH = os.getenv('DATAPATH', '/home/pi/dev/ghouse/data')
 
 FINLAND_OFFSET = 3 * 3600  # 3 hours for SUMMER time, 2 hours for WINTER time
 
@@ -58,8 +61,11 @@ def get_kumpula_radiation_data_for_times(start_time, end_time):
         collected_data[num]['Time'] = offset_time.strftime("%Y-%m-%d %H:%M:%S")
 
         for key in data_keys_interest:
-            named_key = key + f" ({timestep_data['Helsinki Kumpula'][key]['units']})"
-            collected_data[num][named_key] = timestep_data['Helsinki Kumpula'][key]['value'].item()
+            try: 
+                named_key = key + f" ({timestep_data['Helsinki Kumpula'][key]['units']})"
+                collected_data[num][named_key] = timestep_data['Helsinki Kumpula'][key]['value'].item()
+            except KeyError:
+                collected_data[num][named_key] = "NaN"
     temp_df_rad = pd.DataFrame.from_dict(collected_data, orient='index')
     return temp_df_rad
 
@@ -68,19 +74,18 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('-y', action='store_true')
     args = parser.parse_args()
-
     
     today = dt.datetime.now()  # -  dt.timedelta(days=1)
     if args.y:
         today -= dt.timedelta(days=1)
-        
+
     today_str = today.strftime('%Y-%m-%d')
 
     DAYSTART = dt.datetime(today.year, today.month, today.day, 0, 0, 0)
     DAYSTART = DAYSTART - dt.timedelta(seconds=FINLAND_OFFSET)
     DAYEND   = DAYSTART + dt.timedelta(days=1) - dt.timedelta(seconds=1)
 
-    print("Today's date:", today_str)
+    print("Collect day date:", today, "Start:", DAYSTART, "End:", DAYEND)
     # end_time = dt.datetime.utcnow()
     # start_time = dt.datetime(end_time.year, end_time.month, end_time.day, 0, 0, 0) 
     
@@ -91,13 +96,12 @@ if __name__ == "__main__":
 
     print(temp_df.head())
     print(temp_df.tail())
-
-
+    
     print(temp_df_rad.head())
     print(temp_df_rad.tail())
 
-    SAVEPATH = f"/home/pi/dev/ghouse/data/external/{today_str}_fmi_kumpula_temperature.csv"
-    SAVEPATH_RAD = f"/home/pi/dev/ghouse/data/external/{today_str}_fmi_kumpula_radiation.csv"
+    SAVEPATH = f"{DATAPATH}/external/{today_str}_fmi_kumpula_temperature.csv"
+    SAVEPATH_RAD = f"{DATAPATH}/external/{today_str}_fmi_kumpula_radiation.csv"
     # Save the DataFrame to a CSV file
     temp_df.to_csv(SAVEPATH, index=False)
     temp_df_rad.to_csv(SAVEPATH_RAD, index=False)
